@@ -75,7 +75,7 @@ export default {
     },
     sortPosts() {
       return this.category.posts.sort((a, b) => {
-        return a.ups - b.ups;
+        return a.data.ups - b.data.ups;
       });
     }
   },
