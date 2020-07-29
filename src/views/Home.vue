@@ -54,7 +54,6 @@ export default {
           this.categories[index] = payload;
         }
       });
-      console.log(this.categories, this.categories.length);
     }
   },
   async mounted() {
