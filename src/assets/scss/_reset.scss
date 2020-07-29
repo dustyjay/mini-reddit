@@ -1,0 +1,20 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+a,
+a:visited,
+a:hover,
+a:link,
+a:active {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+body,
+html {
+    background-color: #E9EDF0;
+}

@@ -1,0 +1,121 @@
+.post {
+    &__item {
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &--box {
+            background-color: white;
+            border-radius: 4px;
+        }
+
+        &--img {
+            width: 150px;
+            height: 150px;
+            min-height: 150px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 10px;
+            flex: 0 0 150px
+        }
+
+        &--text {
+            background: #FFFFFF;
+            box-shadow: -9px 8px 16px rgba(102, 102, 102, 0.15);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin-left: -30px;
+            flex: 1 0 50%
+        }
+
+        &--title {
+            color: #393939;
+            font-weight: 400;
+            font-size: 14px;
+        }
+
+        &--sub {
+            margin-top: .5rem;
+            margin-bottom: 1rem;
+            color: #a6a6a6;
+            font-size: 12px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        &--detail {
+            display: inline-flex;
+            margin-right: 1rem;
+
+            svg {
+                margin-right: 5px;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        &--link {
+            color: #F93737;
+            transition: all 200ms ease-in;
+            font-size: 14px;
+
+            svg {
+                transition: all 300ms ease-in;
+            }
+
+            &:hover {
+                color: darken($color: #F93737, $amount: 20);
+
+                svg {
+                    margin-left: 0.5rem;
+                }
+            }
+        }
+
+        svg {
+            vertical-align: middle;
+        }
+    }
+
+    &__category {
+        background-color: white;
+        border-radius: 4px;
+        width: 85%;
+        margin: 2rem auto;
+        padding: 1.5rem;
+
+        &--title {
+            color: #393939
+        }
+
+        &--head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        &--sort {
+            cursor: pointer;
+            transition: 100ms linear;
+
+            path {
+                fill: darken($color: #F93737, $amount: 20);
+            }
+
+            &.descend {
+                transform: rotate(180deg);
+
+                path {
+                    fill: #F93737;
+                }
+            }
+        }
+    }
+}
