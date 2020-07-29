@@ -6,12 +6,34 @@
         <p>Just a minute 🙂</p>
       </div>
     </div>
-    <PostCategory
-      v-else
-      :category="category"
-      v-for="(category, i) in categories"
-      :key="i"
-    />
+    <template v-else>
+      <div class="search__box">
+        <form @submit.prevent="searchPosts">
+          <input
+            type="search"
+            class="search__input"
+            placeholder="Search posts...."
+            name="search"
+            id="search"
+            v-model="search"
+            @input="searchPosts"
+          />
+        </form>
+      </div>
+      <template v-if="categories.length > 0">
+        <PostCategory
+          :category="category"
+          v-for="(category, i) in categories"
+          :key="i"
+        />
+      </template>
+      <template v-else>
+        <h3 class="form__empty">
+          There are no posts related to
+          <strong>{{ search }}</strong>
+        </h3>
+      </template>
+    </template>
   </div>
 </template>
 
@@ -26,17 +48,24 @@ export default {
   data() {
     return {
       categories: [],
-      categoryTitles: [],
-      loading: false
+      loading: false,
+      search: ""
     };
   },
   computed: {
-    ...mapGetters(["getPosts"])
+    ...mapGetters(["getPosts"]),
+    filteredPosts() {
+      if (!this.search) return this.getPosts;
+      return this.getPosts.filter(post =>
+        post.data.name.toLowerCase().includes(this.search.toLowerCase())
+      );
+    }
   },
   methods: {
     ...mapActions(["GET_POSTS"]),
     sortCategories() {
-      this.getPosts.map(post => {
+      this.categories = [];
+      this.filteredPosts.map(post => {
         const title = post.data.subreddit;
         const index = this.categories.findIndex(post => post.title === title);
         if (index === -1) {
@@ -54,6 +83,9 @@ export default {
           this.categories[index] = payload;
         }
       });
+    },
+    searchPosts() {
+      this.sortCategories();
     }
   },
   async mounted() {
