@@ -47,7 +47,15 @@
       </svg>
     </div>
     <div class="post__item--box">
-      <PostItem :post="post" v-for="(post, i) in sortedPosts" :key="i" />
+      <transition-group
+        mode="out-in"
+        tag="div"
+        name="fade__down"
+        v-for="(post, i) in sortedPosts"
+        :key="i"
+      >
+        <PostItem :post="post" :key="i" />
+      </transition-group>
     </div>
   </div>
 </template>

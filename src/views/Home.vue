@@ -87,21 +87,24 @@
           :key="i"
         />
       </template>
-      <template v-else>
-        <h3 class="form__empty">
-          There are no posts
-          {{
-            this.showFilter
-              ? "within the selected filters"
-              : `with name ${search}`
-          }}
-        </h3>
-      </template>
+
+      <transition name="fade__in">
+        <template v-if="categories.length <= 0">
+          <h3 class="form__empty">
+            There are no posts
+            {{
+              this.showFilter
+                ? "within the selected filters"
+                : `with name ${search}`
+            }}
+          </h3>
+        </template>
+      </transition>
     </template>
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "Home",
@@ -129,6 +132,7 @@ export default {
 
   methods: {
     ...mapActions(["GET_POSTS"]),
+    ...mapMutations(["SET_POSTS"]),
     async sortCategories() {
       this.categories = [];
       await this.filterPosts();
@@ -198,16 +202,29 @@ export default {
     },
     toggleFilters() {
       this.showFilter = !this.showFilter;
+    },
+    preloadDates() {
+      const date = new Date();
+      const fromDate = date.setDate(date.getDate() - 30);
+      const today = new Date(
+        new Date().setHours(23, 59, 59, 999)
+      ).toUTCString();
+      this.startDate = this.$options.filters.inputDate(new Date(fromDate));
+      this.endDate = this.$options.filters.inputDate(new Date(today));
     }
   },
 
   async mounted() {
+    this.preloadDates();
     this.loading = true;
-    const date = new Date();
-    const fromDate = date.setDate(date.getDate() - 30);
-    const today = new Date(new Date().setHours(23, 59, 59, 999)).toUTCString();
-    this.startDate = this.$options.filters.inputDate(new Date(fromDate));
-    this.endDate = this.$options.filters.inputDate(new Date(today));
+    const tempPosts = JSON.parse(localStorage.getItem("posts"));
+    console.log("TEMP POSTS ", tempPosts);
+    if (tempPosts) {
+      console.log("I got here");
+      this.loading = false;
+      this.SET_POSTS(tempPosts);
+      this.sortCategories();
+    }
     await this.GET_POSTS();
     this.loading = false;
     this.sortCategories();

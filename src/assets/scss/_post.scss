@@ -1,13 +1,8 @@
 .post {
     &__item {
-        margin-bottom: 2rem;
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-
-        &:last-child {
-            margin-bottom: 0;
-        }
 
         @media screen and (min-width: 568px) {
             flex-wrap: nowrap;
@@ -16,6 +11,15 @@
         &--box {
             background-color: white;
             border-radius: 4px;
+
+            &>div {
+
+                margin-bottom: 2rem;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
         }
 
         &--img {
