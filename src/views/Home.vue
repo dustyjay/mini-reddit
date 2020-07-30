@@ -61,18 +61,23 @@
             />
           </div>
           <div class="filters__input">
-            <select name="upvote" v-model="minUpVote" @change="searchPosts">
+            <DropDown
+              :options="voteRanges"
+              placeholder="Select upvote range"
+              @range="handleRange"
+            />
+            <!-- <select name="upvote" v-model="minUpVote" @change="searchPosts">
               <option value="" disabled hidden>Select min upvote</option>
               <option
                 :value="option"
                 v-for="option in voteRanges"
-                :key="option"
+                :key="option.min"
               >
-                {{ option | number }}
+                {{ option.min | number }} - {{ option.max | number }}
               </option>
-            </select>
+            </select> -->
           </div>
-          <div class="filters__input">
+          <!-- <div class="filters__input">
             <select name="upvote" v-model="maxUpVote" @change="searchPosts">
               <option value="" disabled hidden>Select max upvote</option>
               <template v-for="option in voteRanges">
@@ -81,7 +86,7 @@
                 </option>
               </template>
             </select>
-          </div>
+          </div> -->
         </div>
       </div>
       <template v-if="categories.length > 0">
@@ -113,7 +118,8 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   name: "Home",
   components: {
-    PostCategory: () => import("@/components/PostCategory.vue")
+    PostCategory: () => import("@/components/PostCategory"),
+    DropDown: () => import("@/components/DropDown")
   },
 
   data() {
@@ -126,26 +132,82 @@ export default {
       minUpVote: "",
       maxUpVote: "",
       voteRanges: [
-        0,
-        1000,
-        2000,
-        3000,
-        4000,
-        5000,
-        6000,
-        7000,
-        8000,
-        9000,
-        10000,
-        20000,
-        30000,
-        40000,
-        50000,
-        60000,
-        70000,
-        80000,
-        90000,
-        100000
+        {
+          min: 0,
+          max: 1000
+        },
+        {
+          min: 1001,
+          max: 2000
+        },
+        {
+          min: 2001,
+          max: 3000
+        },
+        {
+          min: 3001,
+          max: 4000
+        },
+        {
+          min: 4001,
+          max: 5000
+        },
+        {
+          min: 5001,
+          max: 6000
+        },
+        {
+          min: 6001,
+          max: 7000
+        },
+        {
+          min: 7001,
+          max: 8000
+        },
+        {
+          min: 8001,
+          max: 9000
+        },
+        {
+          min: 9001,
+          max: 10000
+        },
+        {
+          min: 10001,
+          max: 20000
+        },
+        {
+          min: 20001,
+          max: 30000
+        },
+        {
+          min: 30001,
+          max: 40000
+        },
+        {
+          min: 40001,
+          max: 50000
+        },
+        {
+          min: 50001,
+          max: 60000
+        },
+        {
+          min: 60001,
+          max: 70000
+        },
+        {
+          min: 70001,
+          max: 80000
+        },
+        {
+          min: 80001,
+          max: 90000
+        },
+        {
+          min: 90001,
+          max: 100000
+        }
       ],
       showFilter: false,
       filteredPosts: []
@@ -245,6 +307,11 @@ export default {
       ).toUTCString();
       this.startDate = this.$options.filters.inputDate(new Date(fromDate));
       this.endDate = this.$options.filters.inputDate(new Date(today));
+    },
+    handleRange(e) {
+      this.minUpVote = e.min;
+      this.maxUpVote = e.max;
+      this.searchPosts();
     }
   },
 
@@ -262,10 +329,10 @@ export default {
     this.sortCategories();
     setTimeout(() => {
       this.showFilter = true;
-    }, 1000);
+    }, 500);
     setTimeout(() => {
       this.showFilter = false;
-    }, 3000);
+    }, 1500);
   }
 };
 </script>

@@ -19,3 +19,9 @@ html {
     background-color: #E9EDF0;
     font-family: 'Mulish', sans-serif;
 }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
