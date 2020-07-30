@@ -19,3 +19,15 @@ export const formatInputDate = value => {
   }
   return value;
 };
+
+export const number = value => {
+  const figure = +value;
+  if (!Number.isNaN(figure)) {
+    return figure.toLocaleString("en-US", {
+      style: "decimal",
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0
+    });
+  }
+  return value;
+};

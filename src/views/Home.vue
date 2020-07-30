@@ -61,22 +61,26 @@
             />
           </div>
           <div class="filters__input">
-            <input
-              type="number"
-              placeholder="Min Upvotes"
-              name="upvote"
-              v-model="minUpVote"
-              @input="searchPosts"
-            />
+            <select name="upvote" v-model="minUpVote" @change="searchPosts">
+              <option value="" disabled hidden>Select min upvote</option>
+              <option
+                :value="option"
+                v-for="option in voteRanges"
+                :key="option"
+              >
+                {{ option | number }}
+              </option>
+            </select>
           </div>
           <div class="filters__input">
-            <input
-              type="number"
-              placeholder="Max Upvotes"
-              name="maxUpvote"
-              v-model="maxUpVote"
-              @input="searchPosts"
-            />
+            <select name="upvote" v-model="maxUpVote" @change="searchPosts">
+              <option value="" disabled hidden>Select max upvote</option>
+              <template v-for="option in voteRanges">
+                <option v-if="option" :value="option" :key="option">
+                  {{ option | number }}
+                </option>
+              </template>
+            </select>
           </div>
         </div>
       </div>
@@ -121,6 +125,28 @@ export default {
       endDate: "",
       minUpVote: "",
       maxUpVote: "",
+      voteRanges: [
+        0,
+        1000,
+        2000,
+        3000,
+        4000,
+        5000,
+        6000,
+        7000,
+        8000,
+        9000,
+        10000,
+        20000,
+        30000,
+        40000,
+        50000,
+        60000,
+        70000,
+        80000,
+        90000,
+        100000
+      ],
       showFilter: false,
       filteredPosts: []
     };
@@ -169,7 +195,7 @@ export default {
           this.compareEndDate(post.data.created * 1000) &&
           post.data.ups >= +this.minUpVote
       );
-      if (this.maxUpVote) {
+      if (+this.maxUpVote) {
         filtered = filtered.filter(post => post.data.ups <= +this.maxUpVote);
       }
       this.filteredPosts = [...filtered];
@@ -198,6 +224,14 @@ export default {
     },
 
     searchPosts() {
+      if (this.maxUpVote && this.minUpVote) {
+        if (+this.minUpVote >= +this.maxUpVote) {
+          this.maxUpVote =
+            +this.minUpVote < 10000
+              ? +this.minUpVote + 1000
+              : +this.minUpVote + 10000;
+        }
+      }
       this.sortCategories();
     },
     toggleFilters() {
@@ -218,9 +252,7 @@ export default {
     this.preloadDates();
     this.loading = true;
     const tempPosts = JSON.parse(localStorage.getItem("posts"));
-    console.log("TEMP POSTS ", tempPosts);
     if (tempPosts) {
-      console.log("I got here");
       this.loading = false;
       this.SET_POSTS(tempPosts);
       this.sortCategories();

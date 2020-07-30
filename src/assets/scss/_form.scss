@@ -118,7 +118,8 @@
         flex: 0 0 24%;
         max-width: 24%;
 
-        input {
+        input,
+        select {
             @extend .search__input;
             font-size: 12px;
             padding: 2px;
