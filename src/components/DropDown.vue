@@ -102,7 +102,7 @@ export default {
           this.stayOpen = false;
         }
         this.show = false;
-      }, 500);
+      }, 300);
     },
     selectRange(index) {
       const option = this.options[index];
@@ -122,7 +122,6 @@ export default {
       this.emitToParent();
     },
     closeRange() {
-      console.log(this.isInputFocused());
       this.hideTip();
     },
     isInputFocused() {
