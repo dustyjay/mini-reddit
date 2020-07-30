@@ -4,7 +4,7 @@
       <h2 class="post__category--title">{{ category.title }}</h2>
       <svg
         class="post__category--sort"
-        :class="{ descend: !ascending }"
+        :class="{ descend: !ascending, inactive: posts.length <= 1 }"
         @click="toggleSort"
         width="19"
         height="18"
@@ -67,14 +67,20 @@ export default {
       sortedPosts: []
     };
   },
-  computed: {},
+  computed: {
+    posts() {
+      return this.category.posts;
+    }
+  },
   methods: {
     toggleSort() {
-      this.ascending = !this.ascending;
-      this.sortedPosts = this.sortedPosts.reverse();
+      if (this.posts.length > 1) {
+        this.ascending = !this.ascending;
+        this.sortedPosts = this.sortedPosts.reverse();
+      }
     },
     sortPosts() {
-      return this.category.posts.sort((a, b) => {
+      return this.posts.sort((a, b) => {
         return a.data.ups - b.data.ups;
       });
     }

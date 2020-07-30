@@ -63,9 +63,18 @@
           <div class="filters__input">
             <input
               type="number"
-              placeholder="Set Upvotes"
+              placeholder="Min Upvotes"
               name="upvote"
               v-model="minUpVote"
+              @input="searchPosts"
+            />
+          </div>
+          <div class="filters__input">
+            <input
+              type="number"
+              placeholder="Max Upvotes"
+              name="maxUpvote"
+              v-model="maxUpVote"
               @input="searchPosts"
             />
           </div>
@@ -108,6 +117,7 @@ export default {
       startDate: "",
       endDate: "",
       minUpVote: "",
+      maxUpVote: "",
       showFilter: false,
       filteredPosts: []
     };
@@ -148,13 +158,17 @@ export default {
     },
 
     filterPosts() {
-      this.filteredPosts = this.getPosts.filter(
+      let filtered = this.getPosts.filter(
         post =>
-          post.data.name.toLowerCase().includes(this.search.toLowerCase()) &&
+          post.data.title.toLowerCase().includes(this.search.toLowerCase()) &&
           this.compareStartDate(post.data.created * 1000) &&
           this.compareEndDate(post.data.created * 1000) &&
           post.data.ups >= +this.minUpVote
       );
+      if (this.maxUpVote) {
+        filtered = filtered.filter(post => post.data.ups <= +this.maxUpVote);
+      }
+      this.filteredPosts = [...filtered];
     },
 
     compareStartDate(createdDate) {
