@@ -1,4 +1,8 @@
-# edenlife
+# Edenlife
+
+This is a demo of EdenLife App schedule
+
+Preview site [here](https://edenlife-reddit.netlify.app)
 
 ## Project setup
 ```
